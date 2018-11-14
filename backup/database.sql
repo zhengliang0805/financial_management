@@ -23,6 +23,7 @@ create table records(
     uid varchar(50) not null COMMENT '用户id',
     typeid varchar(50) not null COMMENT '类型id',
     tagid varchar(50) not null COMMENT '标签id',
+    accountid varchar(50) not null COMMENT '账户id',
     type boolean not null COMMENT '类型:0支出, 1收入',
     money double(10,2) not null COMMENT '金额',
     commnets varchar(200) COMMENT '备注',
@@ -34,7 +35,7 @@ create table records(
 DROP TABLE IF EXISTS `types`;
 create table types(
     id varchar(50) not null COMMENT 'id',
-    name varchar(50) not null COMMENT '名称',
+    name varchar(50) not null COMMENT '类型名称',
     orders bigint(3) not null COMMENT '顺序',
     created_at bigint(20) not null COMMENT '创建时间',
     primary key (id)
@@ -44,9 +45,19 @@ create table types(
 DROP TABLE IF EXISTS `tags`;
 create table tags(
     id varchar(50) not null COMMENT 'id',
-    name varchar(50) not null COMMENT '名称',
+    name varchar(50) not null COMMENT '标签名称',
     uid varchar(50) not null COMMENT '用户id',
     typeid varchar(50) not null COMMENT '类型id',
+    created_at bigint(20) not null COMMENT '创建时间',
+    primary key (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='标签';
+
+# accounts
+DROP table IF EXISTS `accounts`;
+create table accounts(
+    id varchar(50) not null COMMENT 'id',
+    name varchar(50) not null COMMENT '账户名称',
+    uid varchar(50) not null COMMENT '用户id',
     created_at bigint(20) not null COMMENT '创建时间',
     primary key (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='标签';

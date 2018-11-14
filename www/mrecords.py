@@ -9,6 +9,7 @@ class Record(Model):
     uid = StringField(ddl='varchar(50)')
     typeid = StringField(ddl='varchar(50)')
     tagid = StringField(ddl='varchar(50)')
+    accountid = StringField(ddl='varchar(50)')
     type = BooleanField()
     money = DoubleField(ddl='double(10,2)')
     commnets = StringField(ddl='varchar(200)')
