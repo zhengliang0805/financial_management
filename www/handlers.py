@@ -2,7 +2,7 @@ import re
 import time
 import hashlib
 import logging
-from users import User
+from musers import User
 from config import configs
 
 
@@ -13,6 +13,7 @@ _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$'
 _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
 
+# cookies获取用户
 async def cookies2user(cookies_str):
     '''
     Parse cookie and load user if cookie is valid.
@@ -38,3 +39,15 @@ async def cookies2user(cookies_str):
     except Exception as e:
         logging.exception(e)
         return None
+
+
+# 用户信息存入cookie
+def user2cookies(user, max_age):
+    '''
+    Generate cookie str by user.
+    '''
+    # build cookie string by: id-expires-sha1
+    expires = str(int(time.time()) + max_age)
+    s = '%s-%s-%s-%s' % (user.id, user.passwd, expires, _COOKIE_KEY)
+    L = [user.id, expires, hashlib.sha1(s.encode('utf-8')).hexdigest()]
+    return '-'.join(L)
