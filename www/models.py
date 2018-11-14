@@ -1,8 +1,16 @@
 import logging
+import time
+import uuid
 from Fields import Field
 from orm import execute, select
 
 
+# 定义主键id
+def next_id():
+    return '%015d%s000' % (int(time.time() * 1000), uuid.uuid4().hex)
+
+
+# 创建参数字符串
 def create_args_string(num):
     L = []
     for n in num:
