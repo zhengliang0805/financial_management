@@ -1,7 +1,7 @@
 import logging
 import time
 import uuid
-from Fields import Field
+from fields import Field
 from orm import execute, select
 
 
@@ -13,8 +13,8 @@ def next_id():
 # 创建参数字符串
 def create_args_string(num):
     L = []
-    for n in num:
-        L.join('?')
+    for n in range(num):
+        L.append('?')
     return (',').join(L)
 
 
@@ -22,17 +22,17 @@ def create_args_string(num):
 class ModelMetaClass(type):
     def __new__(cls, name, bases, attrs):
         # 排除modle本身
-        if name == 'model':
+        if name == 'Model':
             return type.__new__(cls, name, bases, attrs)
         # 获取表名
-        tableName = attrs.get('__tablename__', None) or name
+        tableName = attrs.get('__table__', None) or name
         logging.info('Found model: %s (table: %s)' % (name, tableName))
         # 获取所有列以及主键
         mappings = dict()
         fields = []
         primaryKey = None
         # 遍历参数, 将参数中的fields加入到mapping中, 并设置主键列
-        for k, v in attrs:
+        for k, v in attrs.items():
             if isinstance(v, Field):
                 logging.info('found mapping: %s ==> %s' % (k, v))
                 mappings[k] = v
@@ -41,7 +41,7 @@ class ModelMetaClass(type):
                         raise RuntimeError('Duplicate primary key for field: %s' % k)
                     primaryKey = k
                 else:
-                    fields.append(v)
+                    fields.append(k)
         if not primaryKey:
             raise RuntimeError('Primary key not found')
         # 将列从属性中移除

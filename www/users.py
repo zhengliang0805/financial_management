@@ -5,6 +5,7 @@ from fields import StringField, BooleanField, BigintField
 # 用户表
 class User(Model):
     __table__ = 'users'
+
     id = StringField(primary_key=True, default=next_id, ddl='varchar(50)')
     username = StringField(ddl='varchar(50)')
     passwd = StringField(ddl='varchar(50)')
